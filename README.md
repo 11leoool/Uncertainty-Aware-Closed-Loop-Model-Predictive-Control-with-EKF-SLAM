@@ -71,6 +71,30 @@ Then, in MATLAB, `cd` into an experiment folder and run the corresponding
   `delta = delta0 + gamma * sqrt(lambda_max(Sigma_xy))`, where `Sigma_xy` is the
   EKF-SLAM position-covariance block.
 
+## Notation (code &harr; paper)
+
+The code keeps its own self-consistent variable names; they map to the paper symbols
+as follows (paper notation follows the standard Kalman convention: **Q** = process,
+**R** = measurement):
+
+| Code | Paper | Meaning |
+|---|---|---|
+| `X` | `x_hat` | EKF-SLAM state estimate (augmented) |
+| `Sigma` | `P` | state covariance |
+| `P.M` | `Q_u` | input/control-noise covariance `diag(sigma_v^2, sigma_omega^2)` |
+| `P.Q` | `R` | measurement-noise covariance `diag(sigma_d^2, sigma_phi^2)` |
+| `P.L` | `M` | number of landmarks |
+| `P.dt`, `T` | `dt` | sampling period |
+| `cfg.lm` | `(l_x,i, l_y,i)` | surveyed landmark coordinates |
+| `cfg.xs` | `x*` | reference posture |
+| `cfg.gamma` | `gamma` | chance-constraint factor |
+| `cfg.safe_buffer` | `delta_0` | fixed keep-out buffer |
+| `Q`, `R` (in `run_*`/`mc_build_*`) | `W_x`, `W_u` | MPC stage-cost weights |
+| `N` | `N` | MPC prediction horizon |
+
+Note: the parameter struct `P` in `mc_ekf_step.m` is **not** the covariance — the
+covariance is `Sigma` (paper `P`).
+
 ## Attribution
 
 The MPC/CasADi single-shooting and obstacle-avoidance formulations build on the
