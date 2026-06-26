@@ -1,0 +1,23 @@
+# MATLAB
+*.asv
+*.m~
+*.mat
+*.fig
+*.slxc
+slprj/
+octave-workspace
+
+# Generated outputs (regenerate by running the scripts)
+**/mc_results*.mat
+**/gamma_sweep.mat
+# generated run figures (the curated paper figures in figures/ are tracked)
+mc_*.png
+gamma_sweep.png
+# but always keep the curated figures used by the README
+!figures/
+!figures/*.png
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp

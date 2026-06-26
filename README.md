@@ -1,0 +1,92 @@
+# Uncertainty-Aware Closed-Loop MPC with EKF-SLAM
+
+MATLAB/CasADi code for the paper *"Uncertainty-Aware Closed-Loop Model Predictive
+Control with EKF-SLAM for Safe Navigation of Nonholonomic Mobile Robots."*
+
+A differential-drive (unicycle) robot is controlled by a constrained nonlinear MPC
+(NMPC) that is fed pose estimates from an EKF-SLAM filter. Beyond the usual
+certainty-equivalence coupling, the **EKF-SLAM covariance is fed back into the
+controller** to size obstacle keep-out constraints online: the keep-out radius grows
+when the robot is uncertain and tightens when it is confident (a chance constraint).
+
+## Key results (Monte-Carlo, 50 trials)
+
+- **Tracking:** closing the loop with EKF-SLAM cuts terminal tracking error ~39% vs.
+  dead-reckoning (odometry), approaching the ideal-state (oracle) bound.
+- **Safety:** with a *fixed* obstacle margin, both SLAM and odometry collide in ~26–28%
+  of trials. The **covariance-aware margin eliminates SLAM collisions (0%)** at no
+  accuracy cost — an outcome neither a fixed margin nor odometry can match.
+- **Real-time:** ~4–7 ms per control step (p95 ≤ 15 ms), an order-of-magnitude margin;
+  the EKF and the covariance term are negligible.
+
+| Free-space tracking | Stage A (fixed) vs Stage B (cov-aware) | γ sweep (safety–efficiency) |
+|---|---|---|
+| ![tracking](figures/no_obs_error.png) | ![collision](figures/obs_stageB_collision.png) | ![sweep](figures/gamma_sweep.png) |
+
+## Repository structure
+
+```
+non-obstacle/      Free-space point-stabilization study (oracle / odom / slam)
+obstacle-stage-a/  Obstacle avoidance with a fixed safety margin
+obstacle-stage-b/  Obstacle avoidance with the covariance-aware chance constraint
+gamma-sweep/       Safety vs. efficiency trade-off over the chance factor gamma
+legacy/            Original single-run prototype (kept for reference)
+figures/           Figures used in the README / paper
+```
+
+Each experiment folder is self-contained (it carries its own copy of `mc_ekf_step.m`).
+
+| Run this | Produces |
+|---|---|
+| `non-obstacle/run_montecarlo.m` | `mc_results.mat`, tracking-error + trajectory figures |
+| `obstacle-stage-a/run_montecarlo_obs.m` | collision-rate + trajectory figures (fixed margin) |
+| `obstacle-stage-b/run_montecarlo_obs.m` | same, with `cfg.cov_aware = true` |
+| `gamma-sweep/run_gamma_sweep.m` | `gamma_sweep.mat`, trade-off figure |
+| `*/time_perf*.m` | per-step timing benchmark |
+
+## Requirements
+
+- **MATLAB** (developed on a recent release; uses `wrapToPi`/`wrapTo2Pi`).
+- **CasADi** for MATLAB, v3.5.5 (<https://web.casadi.org/>).
+
+Each runnable script begins with an `addpath(...)` to CasADi — **edit that path** to
+point at your CasADi install, e.g.:
+
+```matlab
+addpath('C:\path\to\casadi-windows-matlabR2016a-v3.5.5');
+import casadi.*
+```
+
+Then, in MATLAB, `cd` into an experiment folder and run the corresponding
+`run_*` script.
+
+## Method summary
+
+- **Unicycle model** with a range–bearing measurement model.
+- **EKF-SLAM** with exact velocity-motion prediction and a sequential per-landmark
+  measurement update; landmarks are surveyed (known prior, refined online).
+- **NMPC** via multiple-shooting transcription, solved with CasADi + IPOPT, with
+  actuator-limit and disk obstacle-avoidance constraints.
+- **Covariance-aware chance constraint:** the obstacle keep-out margin is
+  `delta = delta0 + gamma * sqrt(lambda_max(Sigma_xy))`, where `Sigma_xy` is the
+  EKF-SLAM position-covariance block.
+
+## Attribution
+
+The MPC/CasADi single-shooting and obstacle-avoidance formulations build on the
+open-source NMPC-for-mobile-robots tutorial by M. W. Mehrez
+(*Stabilizing NMPC of wheeled mobile robots using open-source real-time software*,
+ICAR 2013; and the associated MATLAB workshop materials).
+
+## Citation
+
+If you use this code, please cite the accompanying paper (details to be added upon
+publication).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Contact
+
+Dun Liu — leoliudun0818@gmail.com
