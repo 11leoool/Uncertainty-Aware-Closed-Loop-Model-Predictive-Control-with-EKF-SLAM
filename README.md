@@ -16,6 +16,10 @@ when the robot is uncertain and tightens when it is confident (a chance constrai
 - **Safety:** with a *fixed* obstacle margin, both SLAM and odometry collide in ~26–28%
   of trials. The **covariance-aware margin eliminates SLAM collisions (0%)** at no
   accuracy cost — an outcome neither a fixed margin nor odometry can match.
+- **Dynamic obstacle:** a moving obstacle is tracked by a constant-velocity EKF; the
+  margin is inflated by the *combined* robot-localization and obstacle-prediction
+  covariance. This drives collisions to **0%** where ignoring the motion (48%) or a
+  fixed margin (36%) fail.
 - **Real-time:** ~4–7 ms per control step (p95 ≤ 15 ms), an order-of-magnitude margin;
   the EKF and the covariance term are negligible.
 
@@ -23,13 +27,26 @@ when the robot is uncertain and tightens when it is confident (a chance constrai
 |---|---|---|
 | ![tracking](figures/no_obs_error.png) | ![collision](figures/obs_stageB_collision.png) | ![sweep](figures/gamma_sweep.png) |
 
+### Dynamic (moving) obstacle
+
+Same trial, same obstacle motion — only the avoidance strategy differs. Under a fixed
+margin the robot and obstacle disks overlap (collision); the covariance-aware margin
+detours and stays clear:
+
+![dynamic side-by-side](figures/dyn_sidebyside.png)
+
+| Dynamic γ sweep | Animations |
+|---|---|
+| ![dyn sweep](figures/dyn_gamma_sweep.png) | [safe run (cv_cov)](figures/dyn_anim_cvcov_safe.gif) · [collision run (static)](figures/dyn_anim_static_collision.gif) |
+
 ## Repository structure
 
 ```
 non-obstacle/      Free-space point-stabilization study (oracle / odom / slam)
-obstacle-stage-a/  Obstacle avoidance with a fixed safety margin
-obstacle-stage-b/  Obstacle avoidance with the covariance-aware chance constraint
-gamma-sweep/       Safety vs. efficiency trade-off over the chance factor gamma
+obstacle-stage-a/  Static obstacle avoidance with a fixed safety margin
+obstacle-stage-b/  Static obstacle avoidance with the covariance-aware chance constraint
+gamma-sweep/       Static safety vs. efficiency trade-off over the chance factor gamma
+dynamic-obstacle/  Moving obstacle: CV-EKF tracker + time-varying chance constraint
 legacy/            Original single-run prototype (kept for reference)
 figures/           Figures used in the README / paper
 ```
@@ -42,6 +59,9 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `obstacle-stage-a/run_montecarlo_obs.m` | collision-rate + trajectory figures (fixed margin) |
 | `obstacle-stage-b/run_montecarlo_obs.m` | same, with `cfg.cov_aware = true` |
 | `gamma-sweep/run_gamma_sweep.m` | `gamma_sweep.mat`, trade-off figure |
+| `dynamic-obstacle/run_montecarlo_dyn.m` | 4-strategy collision study (oracle/static/cv_fixed/cv_cov) |
+| `dynamic-obstacle/run_gamma_sweep_dyn.m` | dynamic safety–efficiency trade-off |
+| `dynamic-obstacle/fig_side_by_side.m`, `make_dyn_media.m` | paper figure + animations |
 | `*/time_perf*.m` | per-step timing benchmark |
 
 ## Requirements
@@ -70,6 +90,11 @@ Then, in MATLAB, `cd` into an experiment folder and run the corresponding
 - **Covariance-aware chance constraint:** the obstacle keep-out margin is
   `delta = delta0 + gamma * sqrt(lambda_max(Sigma_xy))`, where `Sigma_xy` is the
   EKF-SLAM position-covariance block.
+- **Dynamic obstacle:** a constant-velocity EKF (`cv_tracker_step.m`) tracks the
+  moving obstacle; the horizon constraint uses the predicted track, and the margin
+  becomes `delta_k = delta0 + gamma * sqrt(lambda_max(P_xy + Sigma_obs,k))`, combining
+  robot-localization and obstacle-prediction uncertainty (the latter growing with
+  look-ahead). A soft slack keeps the QP feasible in tight encounters.
 
 ## Notation (code &harr; paper)
 
