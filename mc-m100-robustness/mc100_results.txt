@@ -1,0 +1,42 @@
+==================  MONTE CARLO @ M=100  ==================
+[1] Free-space tracking (M=100)
+  oracle  term=0.0488 +/- 0.0002  loc=0.0000 +/- 0.0000
+  odom    term=0.1576 +/- 0.0164  loc=0.1357 +/- 0.0141
+  slam    term=0.0939 +/- 0.0092  loc=0.0718 +/- 0.0068
+[2] Static obstacle, Stage A (fixed margin), M=100
+  oracle  collision  0.0% [ 0.0,  3.7]  term=0.0396
+  odom    collision 33.0% [24.6, 42.7]  term=0.1641
+  slam    collision 23.0% [15.8, 32.2]  term=0.1007
+[3] Static obstacle, Stage B (covariance-aware), M=100
+  slam(cov) collision  0.0% [ 0.0,  3.7]  term=0.1014
+[4] Static gamma sweep (slam cov-aware), M=100
+  gamma=0.0 collision 23.0% [15.8, 32.2]  path=2.305
+  gamma=0.5 collision  6.0% [ 2.8, 12.5]  path=2.948
+  gamma=1.0 collision  1.0% [ 0.2,  5.4]  path=3.050
+  gamma=1.5 collision  1.0% [ 0.2,  5.4]  path=3.029
+  gamma=2.0 collision  0.0% [ 0.0,  3.7]  path=3.059
+  gamma=2.5 collision  0.0% [ 0.0,  3.7]  path=3.128
+  gamma=3.0 collision  0.0% [ 0.0,  3.7]  path=3.186
+[5] Dynamic obstacle, 4 strategies, M=100
+  oracle   collision  1.0% [ 0.2,  5.4]  term=0.0406  path=2.477
+  static   collision 45.0% [35.6, 54.8]  term=0.0992  path=2.295
+  cv_fixed collision 28.0% [20.1, 37.5]  term=0.0984  path=2.479
+  cv_cov   collision  0.0% [ 0.0,  3.7]  term=0.1258  path=4.536
+[6] Dynamic gamma sweep (cv_cov), M=100
+  gamma=0.0 collision 28.0% [20.1, 37.5]  path=2.479
+  gamma=0.5 collision  4.0% [ 1.6,  9.8]  path=3.400
+  gamma=1.0 collision  4.0% [ 1.6,  9.8]  path=4.017
+  gamma=1.5 collision  3.0% [ 1.0,  8.5]  path=4.217
+  gamma=2.0 collision  0.0% [ 0.0,  3.7]  path=4.536
+  gamma=2.5 collision  0.0% [ 0.0,  3.7]  path=4.809
+  gamma=3.0 collision  0.0% [ 0.0,  3.7]  path=5.239
+[7] Ablation: margin size vs adaptivity, M=100
+  STATIC  (matched extra=0.136 m)
+    cv_fixed       collision 23.0% [15.8, 32.2]  path=2.305
+    fixed-matched  collision  0.0% [ 0.0,  3.7]  path=3.146
+    cv_cov         collision  0.0% [ 0.0,  3.7]  path=3.059
+  DYNAMIC (matched extra=0.548 m)
+    cv_fixed       collision 28.0% [20.1, 37.5]  path=2.479
+    fixed-matched  collision  0.0% [ 0.0,  3.7]  path=4.708
+    cv_cov         collision  0.0% [ 0.0,  3.7]  path=4.536
+==================  MC@100 DONE  ==================

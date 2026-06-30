@@ -24,6 +24,9 @@ when the robot is uncertain and tightens when it is confident (a chance constrai
   equally safe (0/50) — so the collision-free level is governed by margin **size**. The
   covariance-aware shaping's real value is that it **self-tunes** that margin online (no
   hand-tuned constant) and is **slightly more path-efficient** at equal safety.
+- **Robustness (M=100):** all studies re-run at 100 trials reproduce the findings with
+  tighter Wilson 95% CIs — the 0% collision rates are bounded at ≤3.7%, the ablation
+  conclusion holds, and the γ-sweeps become monotone. See `mc-m100-robustness/mc100_results.txt`.
 - **Real-time:** ~4–7 ms per control step (p95 ≤ 15 ms), an order-of-magnitude margin;
   the EKF and the covariance term are negligible.
 
@@ -52,6 +55,7 @@ obstacle-stage-b/  Static obstacle avoidance with the covariance-aware chance co
 gamma-sweep/       Static safety vs. efficiency trade-off over the chance factor gamma
 dynamic-obstacle/  Moving obstacle: CV-EKF tracker + time-varying chance constraint
 ablation-adaptivity/  Margin size vs. adaptivity ablation (matched-mean control)
+mc-m100-robustness/   All studies re-run at M=100 (Wilson CIs) as a robustness check
 legacy/            Original single-run prototype (kept for reference)
 figures/           Figures used in the README / paper
 ```
@@ -68,6 +72,7 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `dynamic-obstacle/run_gamma_sweep_dyn.m` | dynamic safety–efficiency trade-off |
 | `dynamic-obstacle/fig_side_by_side.m`, `make_dyn_media.m` | paper figure + animations |
 | `ablation-adaptivity/run_ablation.m` | margin size-vs-adaptivity ablation (static + dynamic) |
+| `mc-m100-robustness/run_mc100.m` | all 7 studies at M=100 with Wilson 95% CIs (`mc100_results.txt`) |
 | `*/time_perf*.m` | per-step timing benchmark |
 
 ## Requirements
