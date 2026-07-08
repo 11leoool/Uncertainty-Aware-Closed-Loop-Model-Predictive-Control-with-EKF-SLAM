@@ -7,9 +7,40 @@ A differential-drive (unicycle) robot is controlled by a constrained nonlinear M
 (NMPC) that is fed pose estimates from an EKF-SLAM filter. Beyond the usual
 certainty-equivalence coupling, the **EKF-SLAM covariance is fed back into the
 controller** to size obstacle keep-out constraints online: the keep-out radius grows
-when the robot is uncertain and tightens when it is confident (a chance constraint).
+when the robot is uncertain and tightens when it is confident.
 
-## Key results (Monte-Carlo, 50 trials)
+## Current version: unknown-map SLAM (`unknown-map/`)
+
+The paper's current setting: **the environment is unknown before it is detected.**
+Landmarks are initialized from their first in-range observation (finite sensing
+range, start-frame convention); obstacles are *discovered*, estimated online by a
+2-state EKF (static) or a coasting constant-velocity EKF with track management
+(dynamic); the margin is
+`delta = delta0 + gamma * sqrt(lambda_max(P_xy + Sigma_obs))` with both covariances
+live estimates. Key results (M=50, confirmed at M=100):
+
+- **Tracking + mapping (return-to-start patrol, ~7 m):** SLAM cuts terminal error
+  **48%** vs. dead reckoning (0.064 vs 0.122 m) while building the map from scratch
+  to **4 cm**.
+- **Sensed static obstacle:** fixed margins collide in 36% (odom) / 14% (SLAM);
+  the covariance-aware margin is **collision-free (0/50, 0/100) for <1% extra
+  path** — it spends clearance only in the landmark-poor passage.
+- **Dynamic obstacle, intermittent visibility:** freeze 88%, CV+fixed 44%,
+  **cov-aware 0%** (matching the clairvoyant oracle) at an honest detour cost
+  (path 15.4 vs 7.0 m). Without track management the coasting covariance
+  blockades the workspace — safety without mission completion.
+- **Perception–control coupling (new finding):** the safety detours degrade the
+  localization that waypoint precision depends on — waypoints are attained in the
+  *belief* frame (mean true miss 0.11 m) while safety remains true-frame because
+  the margin scales with exactly the covariance the detour grows.
+- **Ablation:** a fixed margin matched to the cov-aware mean (0.146 m) is equally
+  safe — the value of adaptivity is *self-tuning* (no calibration sweep needed).
+
+Animations (dashed circle = believed pose):
+[safe run (cv_cov)](unknown-map/media/um_dyn_cvcov_safe.gif) ·
+[collision run (frozen estimate)](unknown-map/media/um_dyn_static_collision.gif)
+
+## Earlier surveyed-landmark studies (Monte-Carlo, 50 trials)
 
 - **Tracking:** closing the loop with EKF-SLAM cuts terminal tracking error ~39% vs.
   dead-reckoning (odometry), approaching the ideal-state (oracle) bound.
@@ -49,6 +80,9 @@ detours and stays clear:
 ## Repository structure
 
 ```
+unknown-map/       CURRENT: unknown-map framing (patrol, sensing range, sensed
+                   obstacles, dynamic + track management, sweeps, ablation, M=100,
+                   timing; media/ has figure+GIF generation scripts and outputs)
 non-obstacle/      Free-space point-stabilization study (oracle / odom / slam)
 obstacle-stage-a/  Static obstacle avoidance with a fixed safety margin
 obstacle-stage-b/  Static obstacle avoidance with the covariance-aware chance constraint

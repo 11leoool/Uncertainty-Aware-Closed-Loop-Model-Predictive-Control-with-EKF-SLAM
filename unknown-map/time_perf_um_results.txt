@@ -1,0 +1,2 @@
+Free-space: mean 6.13 ms, p95 8.32 ms (period 50 ms)
+Obstacle:   mean 11.53 ms, p95 14.92 ms (period 200 ms)

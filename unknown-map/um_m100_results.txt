@@ -1,0 +1,15 @@
+--- Free-space patrol (M = 100) ---
+oracle   term 0.0466 +/- 0.0005 | locerr 0.0000
+odom     term 0.1347 +/- 0.0137 | locerr 0.0852
+slam     term 0.0618 +/- 0.0066 | locerr 0.0390
+--- Static sensed obstacle (M = 100) ---
+oracle      coll   0.0% [ 0.0,  3.7] | path 6.915
+odom_fixed  coll  36.0% [27.3, 45.8] | path 6.855
+slam_fixed  coll  15.0% [ 9.3, 23.3] | path 6.941
+slam_cov    coll   0.0% [ 0.0,  3.7] | path 7.011
+--- Ablation: fixed-matched 0.146 m: coll 0.0% [ 0.0,  3.7] | path 7.024
+--- Dynamic obstacle (M = 100) ---
+oracle    coll   1.0% [ 0.2,  5.4] | path 7.138 | term 0.0338
+static    coll  71.0% [61.5, 79.0] | path 7.135 | term 0.0870
+cv_fixed  coll  56.0% [46.2, 65.3] | path 7.321 | term 0.1007
+cv_cov    coll   1.0% [ 0.2,  5.4] | path 12.974 | term 0.0803

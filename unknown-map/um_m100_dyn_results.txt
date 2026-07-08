@@ -1,0 +1,5 @@
+=== Dynamic M = 100 (wp_timeout 30 s, sim_tim 75 s) ===
+oracle    coll   0.0% [ 0.0,  3.7] | path 6.958 | term 0.0314 | wps 3.00/3
+static    coll  89.0% [81.4, 93.7] | path 6.978 | term 0.0861 | wps 2.36/3
+cv_fixed  coll  42.0% [32.8, 51.8] | path 7.210 | term 0.0822 | wps 2.28/3
+cv_cov    coll   0.0% [ 0.0,  3.7] | path 15.572 | term 0.0763 | wps 2.08/3
