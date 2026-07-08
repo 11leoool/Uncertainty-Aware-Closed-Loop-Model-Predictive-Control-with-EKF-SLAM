@@ -2,6 +2,7 @@
 
 MATLAB/CasADi code for the paper *"Uncertainty-Aware Closed-Loop Model Predictive
 Control with EKF-SLAM for Safe Navigation of Nonholonomic Mobile Robots."*
+The compiled manuscript is included as [`paper.pdf`](paper.pdf).
 
 A differential-drive (unicycle) robot is controlled by a constrained nonlinear MPC
 (NMPC) that is fed pose estimates from an EKF-SLAM filter. Beyond the usual
