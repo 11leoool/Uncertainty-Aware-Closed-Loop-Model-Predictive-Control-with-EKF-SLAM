@@ -22,6 +22,9 @@ wi = 1;  xs = [wps(:,wi); 0];  wp_start_k = 0;
 n_aug = 3 + 2*L;
 rob_r = mpc.rob_r;  obs_r = cfg.obs_r;
 d0 = cfg.safe_buffer;  gamma = cfg.gamma;
+% cfg.fixed_extra: CONSTANT margin inflation for the matched-mean ablation
+% (applies to the cv_fixed strategy in place of the covariance term)
+fixed_extra = 0; if isfield(cfg,'fixed_extra'), fixed_extra = cfg.fixed_extra; end
 maxiter = round(cfg.sim_tim / T);
 
 % --- TRUE obstacle trajectory (CV + accel noise), with horizon look-ahead ---
@@ -60,6 +63,7 @@ args = mpc.args;
 X0 = repmat(cfg.x0_nom,1,N+1); u0 = zeros(nc,N); S0 = zeros(1,N+1);
 
 clr = inf(1,maxiter);
+infl_t = zeros(1,maxiter);            % node-0 applied inflation per step
 traj = zeros(3,maxiter+1); traj(:,1)=x_true;
 traj_est = zeros(3,maxiter+1); traj_est(:,1)=X(1:3);
 otraj = zeros(2,maxiter+1); otraj(:,1)=Otrue(:,1);
@@ -93,9 +97,10 @@ while k < maxiter
             if strcmp(mode,'cv_cov')
                 dlt = d0 + gamma*sqrt(max(eig(Pxy + Sj(1:2,1:2))));
             else
-                dlt = d0;
+                dlt = d0 + fixed_extra;
             end
             RB(j+1) = rob_r+obs_r+dlt;
+            if j == 0, infl_now = dlt - d0; end
             oj = F4*oj; Sj = F4*Sj*F4' + Qo;
         end
     end
@@ -148,6 +153,7 @@ while k < maxiter
     k = k+1;
     clr(k) = norm(x_true(1:2)-Otrue(:,nn+1)) - (rob_r+obs_r);
     if clr(k) < 0, collided = true; end
+    if exist('infl_now','var'), infl_t(k) = infl_now; end
     traj(:,k+1) = x_true;  traj_est(:,k+1) = X(1:3);
     otraj(:,k+1) = Otrue(:,nn+1);
 end
@@ -162,6 +168,7 @@ res.path_len = sum(sqrt(sum(diff(traj(1:2,1:k+1),1,2).^2,1)));
 res.traj = traj(:,1:k+1); res.traj_est = traj_est(:,1:k+1);
 res.otraj = otraj(:,1:k+1);
 res.mean_loc_err = mean(vecnorm(traj(1:2,1:k+1) - traj_est(1:2,1:k+1)));
+res.mean_inflation = mean(infl_t(1:max(k,1)));
 end
 
 % ---------------------------------------------------------------------------
