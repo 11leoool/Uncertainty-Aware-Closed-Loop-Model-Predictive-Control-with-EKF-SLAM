@@ -148,7 +148,45 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `randomized-geometry/run_um_randgeom_v2.m` | corrected rerun: disjoint screening/eval seeds + continuous collision scoring (`um_randgeom_v2_results.txt`) |
 | `randomized-geometry/clustered_analysis.py` | clustered intervals + geometry-level sign test (the analysis reported in the paper) |
 | `filter-consistency/run_um_consistency.m` | filter mis-calibration sweep (`um_consistency_results.txt`) |
+| `unknown-map/paired_reanalysis_v2.m` | paired re-analysis of the shared-seed studies (`paired_reanalysis_v2.txt`) |
 | `*/time_perf*.m` | per-step timing benchmark |
+
+### Paired analysis of the shared-seed studies
+
+Every mode in the unknown-map studies sees the identical noise realization at a
+given trial index, so those studies are paired data and are analysed as such in
+`unknown-map/paired_reanalysis_v2.m` (no new simulation; it re-reads the stored
+per-trial outcomes). Collisions use exact McNemar tests on discordant pairs;
+continuous outcomes use paired bootstrap confidence intervals with **sign-flip
+permutation** p-values and Holm correction within each study.
+
+Three points are worth reading before using these numbers:
+
+- Waypoint completion is recomputed from the stored **true** trajectory. The
+  logged `wp_reached` field is the executive's stage index, which also advances
+  on timeout, so it returns 3 for every mode and must not be used as a
+  completion metric. On the corrected metric the dynamic covariance-aware
+  controller reaches **fewer** waypoints than `cv_fixed` (-0.48 of 3,
+  permutation p = 0.0006, survives Holm) - it trades task progress for
+  clearance, and that is reported rather than smoothed over.
+- Path length is given both over all trials ("simulated path", which includes
+  post-collision travel by comparators that collide in up to 44% of trials) and
+  over the collision-free subset of pairs.
+- The randomized-geometry design reuses the same 20 noise realizations across
+  all 30 geometries, so it is **crossed** (geometry x seed), not merely
+  clustered. Intervals resample geometries and seeds independently. The
+  oracle comparison is +0.17 pp, 95% CI [-1.33, +1.67]; this is a failure to
+  detect a difference and is **not** evidence of equivalence, since no
+  equivalence margin was declared in advance.
+
+### Covariance adequacy study (pre-registered, not yet run)
+
+`coverage-study/PREREGISTRATION.md` is the frozen protocol for the next
+experiment, which measures whether the covariance driving the safety margin
+actually covers the robot-obstacle relative error. It is committed and tagged
+(`prereg-coverage-v1`) **before** the run, and it states in advance what result
+would narrow the paper's claims. No coverage results exist in this repository at
+that tag.
 
 ## Requirements
 
