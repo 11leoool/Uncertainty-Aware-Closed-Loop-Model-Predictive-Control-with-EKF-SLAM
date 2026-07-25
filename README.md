@@ -91,6 +91,10 @@ gamma-sweep/       Static safety vs. efficiency trade-off over the chance factor
 dynamic-obstacle/  Moving obstacle: CV-EKF tracker + time-varying chance constraint
 ablation-adaptivity/  Margin size vs. adaptivity ablation (matched-mean control)
 mc-m100-robustness/   All studies re-run at M=100 (Wilson CIs) as a robustness check
+randomized-geometry/  gamma frozen at 2, transferred across 30 randomized feasible
+                   geometries (600 trials): 0% collisions vs 31-36% for fixed margins
+filter-consistency/   Robustness to filter mis-calibration: collision-free to 4x
+                   overconfidence, graceful degradation, vs 14% cov-blind reference
 legacy/            Original single-run prototype (kept for reference)
 figures/           Figures used in the README / paper
 ```
@@ -108,6 +112,8 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `dynamic-obstacle/fig_side_by_side.m`, `make_dyn_media.m` | paper figure + animations |
 | `ablation-adaptivity/run_ablation.m` | margin size-vs-adaptivity ablation (static + dynamic) |
 | `mc-m100-robustness/run_mc100.m` | all 7 studies at M=100 with Wilson 95% CIs (`mc100_results.txt`) |
+| `randomized-geometry/run_um_randgeom.m` | gamma-transfer over 30 randomized geometries (`um_randgeom_results.txt`) |
+| `filter-consistency/run_um_consistency.m` | filter mis-calibration sweep (`um_consistency_results.txt`) |
 | `*/time_perf*.m` | per-step timing benchmark |
 
 ## Requirements

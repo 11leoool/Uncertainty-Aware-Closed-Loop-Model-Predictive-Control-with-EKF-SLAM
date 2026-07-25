@@ -1,0 +1,9 @@
+=== Randomized-geometry MC (static obstacle, gamma FROZEN=2) ===
+30 feasible geometries x 20 seeds = 600 trials/mode
+
+mode         | pooled collision %% (CI) | worst clear  | geoms w/ >=1 coll
+----------------------------------------------------------------------
+oracle       |  1.33% [0.68,2.61]      |  -0.0130    | 5 / 30
+odom_fixed   | 36.00% [32.26,39.92]      |  -0.2827    | 30 / 30
+slam_fixed   | 31.00% [27.43,34.81]      |  -0.1798    | 30 / 30
+slam_cov     |  0.00% [0.00,0.64]      |  +0.0247    | 0 / 30

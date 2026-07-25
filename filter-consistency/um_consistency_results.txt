@@ -1,0 +1,11 @@
+=== Filter-consistency sweep (M = 50, static sensed obstacle, cov-aware gamma=2) ===
+reference slam_fixed (delta0, cov-blind): coll 14.0% [7.0,26.2], min clear -0.0581, path 6.928
+
+filt/true | cov coll %% (Wilson)   | min clear  | mean sigma | TRUE locerr | path    
+--------------------------------------------------------------------------------------
+  0.10 (overconf)|   2.0% [ 0.4,10.5]      |  -0.0157  |   0.0215   |   0.0773    |  6.962
+  0.25 (overconf)|   0.0% [ 0.0, 7.1]      |  +0.0078  |   0.0339   |   0.0761    |  6.959
+  0.50 (overconf)|   0.0% [ 0.0, 7.1]      |  +0.0365  |   0.0478   |   0.0760    |  6.972
+  1.00 (consistent)|   0.0% [ 0.0, 7.1]      |  +0.0726  |   0.0672   |   0.0759    |  6.989
+  2.00 (conserv)|   0.0% [ 0.0, 7.1]      |  +0.1287  |   0.0947   |   0.0754    |  7.027
+  4.00 (conserv)|   0.0% [ 0.0, 7.1]      |  +0.2062  |   0.1329   |   0.0749    |  7.078
