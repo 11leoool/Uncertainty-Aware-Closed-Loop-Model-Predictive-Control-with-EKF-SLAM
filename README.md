@@ -18,24 +18,24 @@ range, start-frame convention); obstacles are *discovered*, estimated online by 
 2-state EKF (static) or a coasting constant-velocity EKF with track management
 (dynamic); the margin is
 `delta = delta0 + gamma * sqrt(lambda_max(P_xy + Sigma_obs))` with both covariances
-live estimates. Key results (M=50, confirmed at M=100):
+live estimates. Key results (N_MC=50, confirmed at N_MC=100):
 
 - **Tracking + mapping (return-to-start patrol, ~7 m):** SLAM cuts terminal error
   **48%** vs. dead reckoning (0.064 vs 0.122 m) while building the map from scratch
   to **4 cm**.
 - **Sensed static obstacle:** fixed margins collide in 36% (odom) / 14% (SLAM);
-  the covariance-aware margin is **collision-free (0/50, 0/100) for <1% extra
+  the covariance-aware margin recorded **no collision (0 of 50 and 0 of 100 trials) for <1% extra
   path** — it spends clearance only in the landmark-poor passage.
 - **Dynamic obstacle, intermittent visibility:** freeze 88%, CV+fixed 44%,
-  **cov-aware 0%** (matching the clairvoyant oracle) at an honest detour cost
+  **cov-aware 0 of 50** (matching the oracle's collision count) at an honest detour cost
   (path 15.4 vs 7.0 m). Without track management the coasting covariance
   blockades the workspace — safety without mission completion.
 - **Perception–control coupling (new finding):** the safety detours degrade the
   localization that waypoint precision depends on — waypoints are attained in the
   *belief* frame (mean true miss 0.11 m) while safety remains true-frame because
   the margin scales with exactly the covariance the detour grows.
-- **Ablation:** a fixed margin matched to the cov-aware mean (0.146 m) is equally
-  safe — the value of adaptivity is *self-tuning* (no calibration sweep needed).
+- **Ablation:** a fixed margin matched to the cov-aware mean (0.146 m) records the same zero
+  collision count — the value of adaptivity is *self-tuning* (no calibration sweep needed).
 
 Animations (dashed circle = believed pose):
 [safe run (cv_cov)](unknown-map/media/um_dyn_cvcov_safe.gif) ·
@@ -46,18 +46,18 @@ Animations (dashed circle = believed pose):
 - **Tracking:** closing the loop with EKF-SLAM cuts terminal tracking error ~39% vs.
   dead-reckoning (odometry), approaching the ideal-state (oracle) bound.
 - **Safety:** with a *fixed* obstacle margin, both SLAM and odometry collide in ~26–28%
-  of trials. The **covariance-aware margin eliminates SLAM collisions (0%)** at no
+  of trials. The **covariance-aware margin recorded no SLAM collision (0 of 50)** at no
   accuracy cost — an outcome neither a fixed margin nor odometry can match.
 - **Dynamic obstacle:** a moving obstacle is tracked by a constant-velocity EKF; the
   margin is inflated by the *combined* robot-localization and obstacle-prediction
-  covariance. This drives collisions to **0%** where ignoring the motion (48%) or a
+  covariance. This yields **0 of 50 collisions** where ignoring the motion (48%) or a
   fixed margin (36%) fail.
 - **Ablation (size vs. adaptivity):** a *fixed* margin matched to cv_cov's *mean* margin is
-  equally safe (0/50) — so the collision-free level is governed by margin **size**. The
+  records the same zero count (0/50) — so the level at which no collisions were observed is governed by margin **size**. The
   covariance-aware shaping's real value is that it **self-tunes** that margin online (no
   hand-tuned constant) and is **slightly more path-efficient** at equal safety.
-- **Robustness (M=100):** all studies re-run at 100 trials reproduce the findings with
-  tighter Wilson 95% CIs — the 0% collision rates are bounded at ≤3.7%, the ablation
+- **Robustness (N_MC=100):** all studies re-run at 100 trials reproduce the findings with
+  tighter Wilson 95% CIs — the zero-collision arms are bounded at ≤3.7% upper 95%, the ablation
   conclusion holds, and the γ-sweeps become monotone. See `mc-m100-robustness/mc100_results.txt`.
 - **Real-time:** ~4–7 ms per control step (p95 ≤ 15 ms), an order-of-magnitude margin;
   the EKF and the covariance term are negligible.
@@ -82,7 +82,7 @@ detours and stays clear:
 
 ```
 unknown-map/       CURRENT: unknown-map framing (patrol, sensing range, sensed
-                   obstacles, dynamic + track management, sweeps, ablation, M=100,
+                   obstacles, dynamic + track management, sweeps, ablation, N_MC=100,
                    timing; media/ has figure+GIF generation scripts and outputs)
 non-obstacle/      Free-space point-stabilization study (oracle / odom / slam)
 obstacle-stage-a/  Static obstacle avoidance with a fixed safety margin
@@ -90,10 +90,10 @@ obstacle-stage-b/  Static obstacle avoidance with the covariance-aware chance co
 gamma-sweep/       Static safety vs. efficiency trade-off over the chance factor gamma
 dynamic-obstacle/  Moving obstacle: CV-EKF tracker + time-varying chance constraint
 ablation-adaptivity/  Margin size vs. adaptivity ablation (matched-mean control)
-mc-m100-robustness/   All studies re-run at M=100 (Wilson CIs) as a robustness check
+mc-m100-robustness/   All studies re-run at N_MC=100 (Wilson CIs) as a robustness check
 randomized-geometry/  gamma frozen at 2, transferred across 30 randomized feasible
                    geometries (600 trials): 0% collisions vs 31-36% for fixed margins
-filter-consistency/   Robustness to filter mis-calibration: collision-free to 4x
+filter-consistency/   Robustness to filter mis-calibration: no collisions observed to 4x
                    overconfidence, graceful degradation, vs 14% cov-blind reference
 legacy/            Original single-run prototype (kept for reference)
 figures/           Figures used in the README / paper
@@ -111,8 +111,9 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `dynamic-obstacle/run_gamma_sweep_dyn.m` | dynamic safety–efficiency trade-off |
 | `dynamic-obstacle/fig_side_by_side.m`, `make_dyn_media.m` | paper figure + animations |
 | `ablation-adaptivity/run_ablation.m` | margin size-vs-adaptivity ablation (static + dynamic) |
-| `mc-m100-robustness/run_mc100.m` | all 7 studies at M=100 with Wilson 95% CIs (`mc100_results.txt`) |
+| `mc-m100-robustness/run_mc100.m` | all 7 studies at N_MC=100 with Wilson 95% CIs (`mc100_results.txt`) |
 | `randomized-geometry/run_um_randgeom.m` | gamma-transfer over 30 randomized geometries (`um_randgeom_results.txt`) |
+| `randomized-geometry/clustered_analysis.py` | clustered intervals + geometry-level sign test (the analysis reported in the paper) |
 | `filter-consistency/run_um_consistency.m` | filter mis-calibration sweep (`um_consistency_results.txt`) |
 | `*/time_perf*.m` | per-step timing benchmark |
 

@@ -11,7 +11,7 @@ under feasibility constraints (obstacle within contact distance of a random path
 so avoidance is genuinely required; landmarks ≥ 0.45 m from the obstacle, spread apart,
 ≥ 1 within sensing range of the start). An **oracle feasibility filter** then keeps only
 geometries the ideal-state controller solves collision-free — so every tested layout is
-provably solvable and any collision elsewhere is an estimation/margin failure, not an
+solvable on the screening seeds; the oracle still collides on other seeds of accepted layouts, so acceptance is evidence of solvability rather than a guarantee. A collision elsewhere is attributable to estimation or margin rather than to an
 impossible scenario. **γ is frozen at 2** (the value tuned on the original geometry);
 no per-geometry retuning. 30 feasible geometries × 20 shared seeds = 600 trials/mode.
 
