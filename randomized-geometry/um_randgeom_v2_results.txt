@@ -1,0 +1,10 @@
+=== Randomized-geometry v2 (disjoint seeds + continuous collision scoring) ===
+30 geometries x 20 EVAL seeds = 600 trials/mode
+Screening used 3 separate seeds (stream 9001); evaluation stream 4242.
+
+mode         | sampled coll % (geoms) | continuous coll % (geoms) | worst clr  | worst clr(c)
+-----------------------------------------------------------------------------------------------
+oracle       |   0.17% ( 1/30 geoms)      |   0.33% ( 1/30 geoms)      |  -0.0009 |  -0.0025
+odom_fixed   |  29.00% (26/30 geoms)      |  29.83% (26/30 geoms)      |  -0.2622 |  -0.2797
+slam_fixed   |  24.67% (29/30 geoms)      |  26.83% (29/30 geoms)      |  -0.2390 |  -0.2397
+slam_cov     |   0.50% ( 2/30 geoms)      |   0.50% ( 2/30 geoms)      |  -0.0694 |  -0.0694

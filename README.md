@@ -52,7 +52,7 @@ Animations (dashed circle = believed pose):
   margin is inflated by the *combined* robot-localization and obstacle-prediction
   covariance. This yields **0 of 50 collisions** where ignoring the motion (48%) or a
   fixed margin (36%) fail.
-- **Ablation (size vs. adaptivity):** a *fixed* margin matched to cv_cov's *mean* margin is
+- **Ablation (size vs. adaptivity):** a *fixed* margin matched to cv_cov's *mean* margin
   records the same zero count (0/50) — so the level at which no collisions were observed is governed by margin **size**. The
   covariance-aware shaping's real value is that it **self-tunes** that margin online (no
   hand-tuned constant) and is **slightly more path-efficient** at equal safety.
@@ -92,7 +92,8 @@ dynamic-obstacle/  Moving obstacle: CV-EKF tracker + time-varying chance constra
 ablation-adaptivity/  Margin size vs. adaptivity ablation (matched-mean control)
 mc-m100-robustness/   All studies re-run at N_MC=100 (Wilson CIs) as a robustness check
 randomized-geometry/  gamma frozen at 2, transferred across 30 randomized feasible
-                   geometries (600 trials): 0% collisions vs 31-36% for fixed margins
+                   geometries (600 trials, disjoint screening/eval seeds, continuous
+                   scoring): 0.50% collisions vs 27-30% for fixed margins
 filter-consistency/   Robustness to filter mis-calibration: no collisions observed to 4x
                    overconfidence, graceful degradation, vs 14% cov-blind reference
 legacy/            Original single-run prototype (kept for reference)
@@ -113,6 +114,7 @@ Each experiment folder is self-contained (it carries its own copy of `mc_ekf_ste
 | `ablation-adaptivity/run_ablation.m` | margin size-vs-adaptivity ablation (static + dynamic) |
 | `mc-m100-robustness/run_mc100.m` | all 7 studies at N_MC=100 with Wilson 95% CIs (`mc100_results.txt`) |
 | `randomized-geometry/run_um_randgeom.m` | gamma-transfer over 30 randomized geometries (`um_randgeom_results.txt`) |
+| `randomized-geometry/run_um_randgeom_v2.m` | corrected rerun: disjoint screening/eval seeds + continuous collision scoring (`um_randgeom_v2_results.txt`) |
 | `randomized-geometry/clustered_analysis.py` | clustered intervals + geometry-level sign test (the analysis reported in the paper) |
 | `filter-consistency/run_um_consistency.m` | filter mis-calibration sweep (`um_consistency_results.txt`) |
 | `*/time_perf*.m` | per-step timing benchmark |
