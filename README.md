@@ -190,12 +190,23 @@ Three points are worth reading before using these numbers:
 
 ### Covariance adequacy study (pre-registered, not yet run)
 
-`coverage-study/PREREGISTRATION.md` is the frozen protocol for the next
+`coverage-study/PREREGISTRATION_v2.md` is the frozen protocol for the next
 experiment, which measures whether the covariance driving the safety margin
 actually covers the robot-obstacle relative error. It is committed and tagged
-(`prereg-coverage-v1`) **before** the run, and it states in advance what result
+(`prereg-coverage-v2`) **before** the run, and it states in advance what result
 would narrow the paper's claims. No coverage results exist in this repository at
 that tag.
+
+`coverage-study/PREREGISTRATION.md` is the superseded v1, kept unchanged at tag
+`prereg-coverage-v1` for provenance. Review of v1 found that its primary
+decision rule called coverage "adequate" whenever the interval merely *contained*
+0.95 - the non-significance-as-equivalence error that the TOST in the same
+document existed to prevent. v2 replaces it with one-sided non-inferiority
+against a declared 0.93 boundary, adds an explicit inconclusive category, ties
+the TOST to a 90% interval inside [0.93, 0.97], justifies the sample size from a
+power calculation with a pilot-driven re-estimation rule, and specifies
+time-point eligibility, numerical handling and the strata definitions. The pause
+for review is what surfaced this, before any coverage number existed.
 
 ## Requirements
 
