@@ -2,7 +2,31 @@
 
 MATLAB/CasADi code for the paper *"Uncertainty-Aware Closed-Loop Model Predictive
 Control with EKF-SLAM for Safe Navigation of Nonholonomic Mobile Robots."*
-The compiled manuscript is included as [`paper.pdf`](paper.pdf).
+
+> ### ⚠ Interim correction notice (2026-07-26)
+>
+> The **dynamic matched-margin ablation** (`unknown-map/um_dyn_ablation_results.txt`;
+> the dynamic row of the manuscript's ablation table) is **superseded — do not
+> cite**. Its reported "mean applied inflation 4.4419 m" is a logging artifact: a
+> stale value was carried over the ~72% of the mission during which no obstacle
+> constraint existed. Independently, the fixed comparator was derived from an
+> all-mission mean despite being applied only during active tracking, so the two
+> arms were not exposure-matched. The conclusion that *margin size rather than
+> adaptivity* explains the safety results is **suspended** — not reversed — until
+> a corrected rerun under a disjoint calibration/evaluation protocol completes.
+> Details: [`unknown-map/SUPERSEDED_dyn_ablation.md`](unknown-map/SUPERSEDED_dyn_ablation.md).
+> Frozen rerun protocol: [`unknown-map/DYN_ABLATION_ESTIMAND.md`](unknown-map/DYN_ABLATION_ESTIMAND.md).
+>
+> The previously linked `paper.pdf` contained the superseded table and has been
+> **removed**; a corrected build will be restored here. A narrative correction is
+> also pending: the stored trials show the static obstacle passage is *not* the
+> landmark-poor, peak-uncertainty stretch the text describes (2 of 3 landmarks
+> are in range there in all 50 trials, and pose uncertainty is ≈55% of its peak).
+>
+> **Unaffected and re-verified against the stored data:** the headline collision
+> results (fixed margins 36–88% vs. 0 observed for the covariance-aware margin),
+> both γ-sweeps, the randomized-geometry transfer, the mis-calibration sweep,
+> and the N_MC=100 robustness runs.
 
 A differential-drive (unicycle) robot is controlled by a constrained nonlinear MPC
 (NMPC) that is fed pose estimates from an EKF-SLAM filter. Beyond the usual
@@ -25,7 +49,7 @@ live estimates. Key results (N_MC=50, confirmed at N_MC=100):
   to **4 cm**.
 - **Sensed static obstacle:** fixed margins collide in 36% (odom) / 14% (SLAM);
   the covariance-aware margin recorded **no collision (0 of 50 and 0 of 100 trials) for <1% extra
-  path** — it spends clearance only in the landmark-poor passage.
+  path**.
 - **Dynamic obstacle, intermittent visibility:** freeze 88%, CV+fixed 44%,
   **cov-aware 0 of 50** (matching the oracle's collision count) at an honest detour cost
   (path 15.4 vs 7.0 m). Without track management the coasting covariance
@@ -34,8 +58,12 @@ live estimates. Key results (N_MC=50, confirmed at N_MC=100):
   localization that waypoint precision depends on — waypoints are attained in the
   *belief* frame (mean true miss 0.11 m) while safety remains true-frame because
   the margin scales with exactly the covariance the detour grows.
-- **Ablation:** a fixed margin matched to the cov-aware mean (0.146 m) records the same zero
-  collision count — the value of adaptivity is *self-tuning* (no calibration sweep needed).
+- **Ablation (static; descriptive):** a fixed constant set to the cov-aware
+  controller's *all-mission* mean inflation (0.146 m — about 7% below its
+  active-track mean, so the arms were not exactly matched) also recorded zero
+  collisions. The **dynamic** matched row is superseded — see the correction
+  notice above. What the ablations demonstrate is *self-tuning*: the controller
+  finds a working margin online with no calibration sweep.
 
 Animations (dashed circle = believed pose):
 [safe run (cv_cov)](unknown-map/media/um_dyn_cvcov_safe.gif) ·
@@ -53,9 +81,12 @@ Animations (dashed circle = believed pose):
   covariance. This yields **0 of 50 collisions** where ignoring the motion (48%) or a
   fixed margin (36%) fail.
 - **Ablation (size vs. adaptivity):** a *fixed* margin matched to cv_cov's *mean* margin
-  records the same zero count (0/50) — so the level at which no collisions were observed is governed by margin **size**. The
-  covariance-aware shaping's real value is that it **self-tunes** that margin online (no
-  hand-tuned constant) and is **slightly more path-efficient** at equal safety.
+  records the same zero count (0/50). Per the correction notice above, the
+  matched-margin methodology is under corrected evaluation and the
+  size-not-adaptivity conclusion is **suspended**; the demonstrated value of the
+  covariance-aware shaping is that it **self-tunes** the margin online (no
+  hand-tuned constant). The equal-safety path-efficiency comparison is withdrawn
+  pending exactly matched arms.
 - **Robustness (N_MC=100):** all studies re-run at 100 trials reproduce the findings with
   tighter Wilson 95% CIs — the zero-collision arms are bounded at ≤3.7% upper 95%, the ablation
   conclusion holds, and the γ-sweeps become monotone. See `mc-m100-robustness/mc100_results.txt`.
