@@ -118,6 +118,20 @@ If `sigma_hat` implies `n_eval` above the cap, the study proceeds at 400 and the
 secondary TOST is reported as underpowered by design, with the achieved power
 stated.
 
+**What the pilot may and may not be used for.** The pilot supplies exactly two
+things: debugging of the instrumentation, and `sigma_hat`, the between-trial
+*variance* of the per-trial coverage proportion. It may not supply anything
+else. Specifically, the pilot **mean coverage must not be looked at before the
+equivalence margin, the 0.93 non-inferiority boundary, the decision rules of §2,
+or the primary/secondary split are final** - all of which are already fixed by
+this document and are not reopened by the pilot under any circumstance. A margin
+or boundary renegotiated in the light of a pilot point estimate is not
+pre-registered, whatever the timestamp on the file says; it is the outcome
+choosing its own test. The person running the pilot reports `sigma_hat` and the
+instrumentation defect list, and nothing about where the coverage landed. If the
+pilot mean is seen incidentally - which it may well be, since the same script
+computes it - that fact is recorded in §9 and the margins still do not move.
+
 ## 4. Which time points are eligible
 
 v1 did not define this, which would have let the analysis silently mix periods
