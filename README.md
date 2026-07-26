@@ -158,7 +158,12 @@ given trial index, so those studies are paired data and are analysed as such in
 `unknown-map/paired_reanalysis_v2.m` (no new simulation; it re-reads the stored
 per-trial outcomes). Collisions use exact McNemar tests on discordant pairs;
 continuous outcomes use paired bootstrap confidence intervals with **sign-flip
-permutation** p-values and Holm correction within each study.
+permutation** p-values. Two multiplicity families are declared before the
+results are read: the confirmatory continuous outcomes within each study, and
+the four collision tests pooled across both studies. All four collision tests
+survive Holm correction (adjusted p = 4.5e-13, 1.4e-6, 1.5e-5, 0.016). The
+resampling is seeded (`rng(31,'twister')`), so the intervals and p-values
+reproduce exactly.
 
 Three points are worth reading before using these numbers:
 
@@ -169,9 +174,13 @@ Three points are worth reading before using these numbers:
   controller reaches **fewer** waypoints than `cv_fixed` (-0.48 of 3,
   permutation p = 0.0006, survives Holm) - it trades task progress for
   clearance, and that is reported rather than smoothed over.
-- Path length is given both over all trials ("simulated path", which includes
-  post-collision travel by comparators that collide in up to 44% of trials) and
-  over the collision-free subset of pairs.
+- Path length is given over all trials ("simulated path", which includes
+  post-collision travel by comparators that collide in up to 44% of trials). It
+  is also given over the collision-free subset of pairs, but that row is
+  **exploratory and carries no p-value**: conditioning on both controllers
+  avoiding a collision selects on an outcome the controller itself affects, so
+  the surviving pairs are not exchangeable and a test on them would have no
+  protected error rate.
 - The randomized-geometry design reuses the same 20 noise realizations across
   all 30 geometries, so it is **crossed** (geometry x seed), not merely
   clustered. Intervals resample geometries and seeds independently. The

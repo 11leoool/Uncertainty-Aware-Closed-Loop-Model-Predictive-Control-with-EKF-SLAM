@@ -1,40 +1,43 @@
 === Corrected paired re-analysis (no new simulation) ===
+Seed: rng(31,'twister') - resampling is reproducible.
 CIs: paired bootstrap over trials (20000). p-values: paired sign-flip
 permutation (20000), which is the correct null for a paired difference.
-Holm correction within each study over its continuous-outcome family.
+Holm correction within each study over its confirmatory continuous family,
+and across the four collision tests as a separate declared family.
 Direction is stated per metric.
 
 ================ Static sensed obstacle ================
 
 -- slam_cov vs odom_fixed (n=50) --
   collisions 0/50 vs 18/50 | discordant 0:18 | exact McNemar p=7.63e-06
-  paired risk reduction +36.0 pp [22.0, 50.0]
+  paired risk reduction +36.0 pp [24.0, 50.0]
   no trial contained a slam_cov-only collision.
-  terminal error                -0.1121  [ -0.1416, -0.0834]  perm p=5e-05   (lower better, n=50)
-  min clearance                 +0.1336  [ +0.1102, +0.1575]  perm p=5e-05   (HIGHER better, n=50)
-  simulated path (all)          +0.1347  [ +0.0869, +0.1856]  perm p=5e-05   (lower better, n=50)
-  path (collision-free pairs)   +0.1138  [ +0.0549, +0.1798]  perm p=0.0005   (lower better, n=32)
-  true waypoints /3             +0.4400  [ +0.2600, +0.6200]  perm p=0.0002   (HIGHER better, n=50)
+  terminal error                              -0.1121  [ -0.1417, -0.0830]  perm p=5e-05   (lower better, n=50)
+  min clearance                               +0.1336  [ +0.1108, +0.1570]  perm p=5e-05   (HIGHER better, n=50)
+  simulated path (all)                        +0.1347  [ +0.0867, +0.1855]  perm p=5e-05   (lower better, n=50)
+  path, collision-free pairs [EXPLORATORY]    +0.1138  [ +0.0555, +0.1789]  no test       (lower better, n=32)
+  true waypoints /3                           +0.4400  [ +0.2600, +0.6200]  perm p=0.00015   (HIGHER better, n=50)
 
 -- slam_cov vs slam_fixed (n=50) --
   collisions 0/50 vs 7/50 | discordant 0:7 | exact McNemar p=0.0156
   paired risk reduction +14.0 pp [6.0, 24.0]
   no trial contained a slam_cov-only collision.
-  terminal error                -0.0022  [ -0.0077, +0.0034]  perm p=0.4402   (lower better, n=50)
-  min clearance                 +0.1291  [ +0.1243, +0.1345]  perm p=5e-05   (HIGHER better, n=50)
-  simulated path (all)          +0.0603  [ +0.0461, +0.0747]  perm p=5e-05   (lower better, n=50)
-  path (collision-free pairs)   +0.0556  [ +0.0411, +0.0698]  perm p=5e-05   (lower better, n=43)
-  true waypoints /3             -0.0200  [ -0.1000, +0.0600]  perm p=1   (HIGHER better, n=50)
+  terminal error                              -0.0022  [ -0.0078, +0.0032]  perm p=0.4399   (lower better, n=50)
+  min clearance                               +0.1291  [ +0.1244, +0.1347]  perm p=5e-05   (HIGHER better, n=50)
+  simulated path (all)                        +0.0603  [ +0.0463, +0.0748]  perm p=5e-05   (lower better, n=50)
+  path, collision-free pairs [EXPLORATORY]    +0.0556  [ +0.0412, +0.0700]  no test       (lower better, n=43)
+  true waypoints /3                           -0.0200  [ -0.1200, +0.0600]  perm p=1   (HIGHER better, n=50)
 
-  -- Holm within study (family of 8 continuous tests) --
+  -- Holm within study (family of 8 confirmatory continuous tests) --
     odom_fixed | terminal error                perm p=5e-05     Holm=0.0004    survives
     odom_fixed | min clearance                 perm p=5e-05     Holm=0.0004    survives
     odom_fixed | simulated path (all)          perm p=5e-05     Holm=0.0004    survives
     slam_fixed | min clearance                 perm p=5e-05     Holm=0.0004    survives
     slam_fixed | simulated path (all)          perm p=5e-05     Holm=0.0004    survives
-    odom_fixed | true waypoints /3             perm p=0.0002    Holm=0.0006    survives
-    slam_fixed | terminal error                perm p=0.4402    Holm=0.8805    ns
+    odom_fixed | true waypoints /3             perm p=0.00015   Holm=0.00045   survives
+    slam_fixed | terminal error                perm p=0.4399    Holm=0.8799    ns
     slam_fixed | true waypoints /3             perm p=1         Holm=1         ns
+  (the exploratory collision-free path row is excluded from this family)
 
 ================ Dynamic obstacle ================
 
@@ -42,31 +45,38 @@ Direction is stated per metric.
   collisions 0/50 vs 44/50 | discordant 0:44 | exact McNemar p=1.14e-13
   paired risk reduction +88.0 pp [78.0, 96.0]
   no trial contained a cv_cov-only collision.
-  terminal error                -0.0113  [ -0.0269, +0.0042]  perm p=0.1597   (lower better, n=50)
-  min clearance                 +0.8491  [ +0.7950, +0.8947]  perm p=5e-05   (HIGHER better, n=50)
-  simulated path (all)          +8.4336  [ +7.7943, +9.1085]  perm p=5e-05   (lower better, n=50)
-  path (collision-free pairs)   +9.1538  [ +6.9616,+10.8979]  perm p=0.0338   (lower better, n=6)
-  true waypoints /3             -0.4200  [ -0.6600, -0.1800]  perm p=0.0027   (HIGHER better, n=50)
+  terminal error                              -0.0113  [ -0.0269, +0.0042]  perm p=0.1642   (lower better, n=50)
+  min clearance                               +0.8491  [ +0.7949, +0.8949]  perm p=5e-05   (HIGHER better, n=50)
+  simulated path (all)                        +8.4336  [ +7.7982, +9.0865]  perm p=5e-05   (lower better, n=50)
+  path, collision-free pairs [EXPLORATORY]    +9.1538  [ +6.9727,+10.8969]  no test       (lower better, n=6)
+  true waypoints /3                           -0.4200  [ -0.6600, -0.1800]  perm p=0.00235   (HIGHER better, n=50)
 
 -- cv_cov vs cv_fixed (n=50) --
   collisions 0/50 vs 22/50 | discordant 0:22 | exact McNemar p=4.77e-07
   paired risk reduction +44.0 pp [30.0, 58.0]
   no trial contained a cv_cov-only collision.
-  terminal error                -0.0071  [ -0.0219, +0.0075]  perm p=0.3521   (lower better, n=50)
-  min clearance                 +0.7723  [ +0.7195, +0.8163]  perm p=5e-05   (HIGHER better, n=50)
-  simulated path (all)          +8.1509  [ +7.5237, +8.8046]  perm p=5e-05   (lower better, n=50)
-  path (collision-free pairs)   +8.3562  [ +7.4906, +9.2313]  perm p=5e-05   (lower better, n=28)
-  true waypoints /3             -0.4800  [ -0.7000, -0.2400]  perm p=0.0006   (HIGHER better, n=50)
+  terminal error                              -0.0071  [ -0.0219, +0.0079]  perm p=0.3565   (lower better, n=50)
+  min clearance                               +0.7723  [ +0.7201, +0.8159]  perm p=5e-05   (HIGHER better, n=50)
+  simulated path (all)                        +8.1509  [ +7.5276, +8.8011]  perm p=5e-05   (lower better, n=50)
+  path, collision-free pairs [EXPLORATORY]    +8.3562  [ +7.5082, +9.2250]  no test       (lower better, n=28)
+  true waypoints /3                           -0.4800  [ -0.7000, -0.2400]  perm p=0.00055   (HIGHER better, n=50)
 
-  -- Holm within study (family of 8 continuous tests) --
+  -- Holm within study (family of 8 confirmatory continuous tests) --
     static | min clearance                     perm p=5e-05     Holm=0.0004    survives
     static | simulated path (all)              perm p=5e-05     Holm=0.0004    survives
     cv_fixed | min clearance                   perm p=5e-05     Holm=0.0004    survives
     cv_fixed | simulated path (all)            perm p=5e-05     Holm=0.0004    survives
-    cv_fixed | true waypoints /3               perm p=0.0006    Holm=0.0024    survives
-    static | true waypoints /3                 perm p=0.0027    Holm=0.0081    survives
-    static | terminal error                    perm p=0.1597    Holm=0.3194    ns
-    cv_fixed | terminal error                  perm p=0.3521    Holm=0.3521    ns
+    cv_fixed | true waypoints /3               perm p=0.00055   Holm=0.0022    survives
+    static | true waypoints /3                 perm p=0.00235   Holm=0.00705   survives
+    static | terminal error                    perm p=0.1642    Holm=0.3284    ns
+    cv_fixed | terminal error                  perm p=0.3565    Holm=0.3565    ns
+  (the exploratory collision-free path row is excluded from this family)
+
+================ Collision family (Holm across all 4 tests) ================
+  Dynamic obstacle: cv_cov vs static                   McNemar p=1.137e-13   Holm=4.547e-13   survives
+  Dynamic obstacle: cv_cov vs cv_fixed                 McNemar p=4.768e-07   Holm=1.431e-06   survives
+  Static sensed obstacle: slam_cov vs odom_fixed       McNemar p=7.629e-06   Holm=1.526e-05   survives
+  Static sensed obstacle: slam_cov vs slam_fixed       McNemar p=0.01563     Holm=0.01563     survives
 
 ================ Randomized geometry v2 ================
 The SAME 20 noise realizations are reused across all 30 geometries, so the
@@ -76,8 +86,8 @@ removes the conditioning on the fixed noise panel that a geometry-only
 bootstrap imposes.
 
   slam_cov vs oracle       rate diff +0.0017  two-way 95% CI [-0.0133,+0.0167]
-  slam_cov vs odom_fixed   rate diff -0.2933  two-way 95% CI [-0.3867,-0.2050]
-  slam_cov vs slam_fixed   rate diff -0.2633  two-way 95% CI [-0.3550,-0.1833]
+  slam_cov vs odom_fixed   rate diff -0.2933  two-way 95% CI [-0.3900,-0.2050]
+  slam_cov vs slam_fixed   rate diff -0.2633  two-way 95% CI [-0.3550,-0.1817]
 
   Note: a no-difference result here is absence of evidence, not evidence of
   equivalence; no equivalence margin was specified in advance.
