@@ -1,0 +1,7 @@
+=== Calibrated fixed constant (c = 0.2731 m, frozen on disjoint training) ===
+collisions: cal-fixed 1/600 | slam_cov 3/600 | delta0-fixed 161/600
+mean path:  cal-fixed 7.721 (slam_cov path not stored per-trial in v2)
+slam_cov - cal-fixed rate diff +0.0033  two-way 95% CI [-0.0067,+0.0183]
+Pre-declared: comparable performance -> frame as automatic margin
+generation + transfer; small counts may be inconclusive and are
+reported as such (PROTOCOL.md).
