@@ -1,6 +1,8 @@
 # Frozen estimand and logging contract — dynamic matched-margin ablation
 
-**Status: FROZEN before the corrected rerun. No corrected result exists yet.**
+**Status: FROZEN before the corrected rerun.**
+**Update 2026-07-27: the rerun is complete on this protocol as written (no
+deviations); results in `dyn_ablation_v2/dyn_ablation_v2_results.txt`.**
 
 Resetting the stale variable is not sufficient. The experiment also needs a
 definition of what "matched" means, fixed before the run, because the obvious
@@ -56,7 +58,9 @@ Project-wide rule, adopted from this defect onward:
 > Any parameter estimated from simulated data must be frozen using a
 > calibration stream disjoint from the evaluation stream.
 
-- Frozen `c`: *pending calibration run*
+- Frozen `c`: **2.6234 m** (calibration stream `rng(81000+t)`, t = 1..50, cv_cov
+  arm; per-trial median 2.8436, IQR 0.1793, min 0.7385, max 2.8542; mean active
+  fraction 0.275). Recorded 2026-07-26, before any evaluation trial ran.
 
 ## 3. Logging contract
 

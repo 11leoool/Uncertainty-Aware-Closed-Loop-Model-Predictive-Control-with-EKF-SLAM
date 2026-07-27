@@ -1,8 +1,15 @@
 # INVALID RESULT — DO NOT CITE
 
-**`um_dyn_ablation_results.txt` (dynamic matched-mean ablation) is invalid.**
-The corrected experiment has not yet been run. Until it is, no conclusion may be
-drawn from that file or from the dynamic row of Table 8 in the manuscript.
+**`um_dyn_ablation_results.txt` (dynamic matched-mean ablation) is invalid —
+do not cite that file or the original (pre-correction) dynamic table row.**
+
+**Update 2026-07-27: the corrected experiment is complete** under the frozen
+protocol in `DYN_ABLATION_ESTIMAND.md`: constant frozen at c = 2.6234 m from
+disjoint calibration seeds, evaluated on the original paired seeds, realised
+active-step means matched to 0.3%. Outcome: **0/50 (cov-aware) vs 1/50 (matched
+constant), exact McNemar p = 1 — inconclusive** on whether temporal adaptation
+adds safety beyond a calibrated constant. Results and scripts:
+`unknown-map/dyn_ablation_v2/`.
 
 ## What is wrong
 

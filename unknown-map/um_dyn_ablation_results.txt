@@ -1,3 +1,10 @@
+=== SUPERSEDED - INVALID, DO NOT CITE ===
+The 4.4419 m figure below is a logging artifact (stale value carried over
+~72% of the mission with no active constraint) and the fixed-matched row is
+withdrawn. See SUPERSEDED_dyn_ablation.md; corrected experiment in
+dyn_ablation_v2/. Retained only so existing copies can be identified.
+=========================================
+
 === Dynamic matched-mean ablation (M = 50) ===
 cv_cov (gamma=2)      : coll  0.0% [ 0.0,  7.1] | min clear +0.2103 | path 15.440 | term 0.0776 | wps 2.00/3 | mean applied inflation 4.4419 m
 fixed-matched (4.442 m): coll  0.0% [ 0.0,  7.1] | min clear +0.7227 | path 16.231 | term 0.0779 | wps 2.08/3

@@ -1,0 +1,33 @@
+=== Release-gate grep (2026-07-26): forbidden residues before push ===
+--- 'enforced margin' ---
+--- 'where the uncertainty resides' ---
+paper_mdpi/main.tex:1083:margin recorded no collision with a sensed static obstacle (0 of 50 trials) for less 
+--- 'where uncertainty is concentrated' ---
+--- 'landmark-poor' ---
+paper_mdpi/main.tex:271:contribute no update, so the pose covariance grows through landmark-poor stretches
+paper_mdpi/main.tex:394:relative uncertainty at longer look-ahead during landmark-poor or aggressively
+paper_mdpi/main.tex:443:middle of the second leg is landmark-poor and the pose covariance swells
+paper_mdpi/main.tex:509:uncertainty trace (Figure~\ref{fig:noobs}, right) shows the expected uncertainty signa
+paper_mdpi/main.tex:541:We now place the obstacle on the landmark-poor second leg, unknown to the robot
+paper_mdpi/main.tex:552:because the inflation is concentrated in the landmark-poor passage, where uncertainty 
+paper_mdpi/main.tex:555:Figure~\ref{fig:obsA} shows the trajectories and the margin dynamics: the applied infl
+paper_mdpi/main.tex:579:uncertainty, swelling through the landmark-poor passage.\label{fig:obsA}}
+paper_mdpi/main.tex:589:covariance, it adds clearance only in the landmark-poor passage where the uncertainty 
+paper_mdpi/main.tex:1083:margin recorded no collision with a sensed static obstacle (0 of 50 trials) for less 
+covariance-aware-mpc-ekfslam/README.md:23:> landmark-poor, peak-uncertainty stretch the text describes (2 of 3
+--- 'equal safety' ---
+--- 'equally safe' ---
+--- 'governed by margin size' ---
+paper_mdpi/main.tex:1086:at which no collisions were observed is governed by margin size, whereas the distinct
+--- 'adaptivity' ---
+paper_mdpi/main.tex:126:\item An ablation that isolates margin \emph{size} from \emph{adaptivity}, showing the
+paper_mdpi/main.tex:727:\subsection{Ablation: Margin Size vs.\ Adaptivity}
+paper_mdpi/main.tex:740:governed primarily by the average margin size rather than by adaptivity. The
+paper_mdpi/main.tex:766:\caption{Margin size vs.\ adaptivity ablation ($N_{\mathrm{MC}}=50$). The
+paper_mdpi/main.tex:1054:ablation (Table~\ref{tab:ablation}) shows that margin size, not adaptivity, sets
+covariance-aware-mpc-ekfslam/README.md:15:> adaptivity* explains the safety results is **suspended** — not r
+covariance-aware-mpc-ekfslam/README.md:83:- **Ablation (size vs. adaptivity):** a *fixed* margin matched to cv
+covariance-aware-mpc-ekfslam/README.md:86:  size-not-adaptivity conclusion is **suspended**; the demonstrated 
+covariance-aware-mpc-ekfslam/README.md:123:ablation-adaptivity/  Margin size vs. adaptivity ablation (matched-
+covariance-aware-mpc-ekfslam/README.md:145:| `ablation-adaptivity/run_ablation.m` | margin size-vs-adaptivity 
+--- 'spends clearance' ---

@@ -1,0 +1,4 @@
+CALIBRATION (disjoint stream rng(81000+t), t=1..50)
+c = mean over trials of (mean infl | active) = 2.6234 m
+per-trial c: median 2.8436  IQR 0.1793  min 0.7385  max 2.8542
+active fraction: mean 0.275  median 0.240

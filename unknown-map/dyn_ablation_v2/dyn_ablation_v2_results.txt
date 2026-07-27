@@ -1,0 +1,16 @@
+=== Corrected dynamic matched-margin ablation (frozen protocol) ===
+Comparator: fixed margin MATCHED TO THE REFERENCE ARM'S ACTIVE-TRACK MEAN
+(not exposure-matched; residual mismatch reported below). c = 2.6234 m, frozen
+from a disjoint calibration stream before any evaluation trial ran.
+
+cv_cov    coll 0/50 | active frac 0.284 | infl|active mean 2.615 med 2.529 IQR 2.837 max 5.631
+          mission-integrated infl 0.7019 m | path 15.44 | worst clear +0.210 | slack freq 1.000 max 8.78
+cv_fixed  coll 1/50 | active frac 0.291 | infl|active mean 2.623 med 2.623 IQR 0.000 max 2.623
+          mission-integrated infl 0.7637 m | path 16.37 | worst clear -0.142 | slack freq 1.000 max 2.89
+
+paired collisions: discordant cov-only 0 : fixed-only 1 | exact McNemar p = 1
+risk difference +2.0 pp
+
+residual exposure mismatch (realised active-track means): +0.3%
+Pre-declared: a small discordant count is INCONCLUSIVE, not evidence of
+either controller's superiority (frozen rule 5.1).
