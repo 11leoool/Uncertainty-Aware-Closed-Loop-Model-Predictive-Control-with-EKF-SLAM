@@ -62,3 +62,18 @@ COMPARABLE, the transfer advantage over the delta0 baselines is carried by
 margin size, and the covariance-aware controller's demonstrated role is
 generating that margin automatically (the constant was obtained by running the
 adaptive controller on training layouts and summarising it).
+
+## Interpretation refinement (recorded 2026-07-28, wording precision only)
+
+The outcome above stands; its wording is stated precisely as follows.
+Margin magnitude, not online adaptivity, explains the observed transfer
+safety in this experiment. The calibrated constant is a diagnostic
+comparator, not an independently deployable baseline: it was derived
+offline from the adaptive controller's outputs on disjoint training
+layouts, so the comparison isolates the mechanism but does not establish
+adaptive safety superiority (and none is claimed). The covariance-aware
+method's demonstrated advantage is eliminating a separate offline
+margin-calibration stage while producing state-dependent margins online.
+The manuscript uses this wording. Note also that the protocol's public
+timestamp (this repository's commit) postdates the run; the manuscript
+therefore says "pre-specified", not "pre-registered".
