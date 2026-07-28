@@ -77,3 +77,8 @@ margin-calibration stage while producing state-dependent margins online.
 The manuscript uses this wording. Note also that the protocol's public
 timestamp (this repository's commit) postdates the run; the manuscript
 therefore says "pre-specified", not "pre-registered".
+
+Scope note (2026-07-28): "margin-calibration" above refers to the fixed
+clearance constant only. The scaling factor gamma and the other controller
+parameters remain fixed offline design choices; the method avoids calibrating
+the clearance constant, it does not remove offline tuning altogether.
